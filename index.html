@@ -1,41 +1,255 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy - Smart Alarm</title>
-  <meta charset="UTF-8">
+  <style>
+    :root {
+      --bg1: #0f172a;
+      --bg2: #1e293b;
+      --card: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent: #38bdf8;
+      --accent2: #a78bfa;
+      --border: rgba(255, 255, 255, 0.15);
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #bae6fd;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin: 0 0 12px;
+      letter-spacing: -1px;
+    }
+
+    .subtitle {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 24px;
+      color: #e2e8f0;
+    }
+
+    p, li {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    ul {
+      padding-left: 22px;
+      margin: 0;
+    }
+
+    .highlight {
+      color: white;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 28px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .top-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(167,139,250,0.25), transparent 70%);
+      top: -100px;
+      right: -80px;
+      pointer-events: none;
+      filter: blur(8px);
+    }
+
+    .bottom-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(56,189,248,0.2), transparent 70%);
+      bottom: -100px;
+      left: -80px;
+      pointer-events: none;
+      filter: blur(8px);
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 32px;
+      }
+
+      .subtitle {
+        font-size: 16px;
+      }
+
+      .card {
+        padding: 22px;
+      }
+    }
+  </style>
 </head>
-<body style="font-family: Arial; max-width: 800px; margin: auto; padding: 20px;">
-  
-  <h1>Privacy Policy - Smart Alarm</h1>
+<body>
+  <div class="top-glow"></div>
+  <div class="bottom-glow"></div>
 
-  <p>Smart Alarm respects your privacy. This app helps users manage alarms with AI-generated challenges.</p>
+  <div class="container">
+    <div class="hero">
+      <div class="badge">Smart Alarm • Privacy Policy</div>
+      <h1>Your Privacy Matters</h1>
+      <p class="subtitle">
+        Smart Alarm is designed to help users wake up with challenge-based alarms in a simple,
+        secure, and user-friendly experience. This page explains what information we collect,
+        how we use it, and how we protect your privacy.
+      </p>
+    </div>
 
-  <h2>Information We Collect</h2>
-  <ul>
-    <li>Email address (via Firebase Authentication)</li>
-    <li>Alarm settings and preferences (stored locally on your device)</li>
-  </ul>
+    <div class="card">
+      <h2>1. Information We Collect</h2>
+      <p>
+        Smart Alarm may collect limited information needed to provide core app features.
+        Depending on how you use the app, this may include:
+      </p>
+      <ul>
+        <li><span class="highlight">Account information</span>, such as your email address when signing in with Firebase Authentication</li>
+        <li><span class="highlight">Alarm settings</span>, such as alarm time, label, challenge type, and preferences</li>
+        <li><span class="highlight">Basic app usage data</span>, such as alarm activity or simple statistics shown inside the app</li>
+      </ul>
+    </div>
 
-  <h2>How We Use Information</h2>
-  <ul>
-    <li>To authenticate users</li>
-    <li>To manage alarm settings</li>
-  </ul>
+    <div class="card">
+      <h2>2. How We Use Your Information</h2>
+      <p>Your information is used only for app functionality, including:</p>
+      <ul>
+        <li>Authenticating and managing your account</li>
+        <li>Saving and loading your alarm preferences</li>
+        <li>Supporting challenge-based alarm features</li>
+        <li>Improving app reliability and user experience</li>
+      </ul>
+    </div>
 
-  <h2>Data Storage</h2>
-  <ul>
-    <li>Firebase Authentication is used for login</li>
-    <li>Alarm data is stored locally on your device</li>
-  </ul>
+    <div class="card">
+      <h2>3. Data Storage</h2>
+      <p>
+        Smart Alarm uses a combination of secure services and local device storage:
+      </p>
+      <ul>
+        <li><span class="highlight">Firebase Authentication</span> is used for user login and account access</li>
+        <li><span class="highlight">Local device storage</span> may be used to save alarms, preferences, and statistics for app functionality</li>
+      </ul>
+      <p>
+        We aim to collect only the minimum amount of data necessary for the app to work properly.
+      </p>
+    </div>
 
-  <h2>Data Sharing</h2>
-  <p>We do not sell or share your personal data.</p>
+    <div class="card">
+      <h2>4. Data Sharing</h2>
+      <p>
+        We do <span class="highlight">not sell</span>, rent, or trade your personal information.
+        Your data is not shared with third parties except where required to operate the app,
+        such as authentication services provided by Firebase.
+      </p>
+    </div>
 
-  <h2>User Rights</h2>
-  <p>You can log out at any time or uninstall the app to remove data.</p>
+    <div class="card">
+      <h2>5. User Control and Choices</h2>
+      <p>You have control over your information. You may:</p>
+      <ul>
+        <li>Log out of your account at any time</li>
+        <li>Delete app data by uninstalling the app or clearing local storage</li>
+        <li>Contact us if you have questions about your data</li>
+      </ul>
+    </div>
 
-  <h2>Contact</h2>
-  <p>Email: 6731503070@lamduan.mfu.ac.th</p>
+    <div class="card">
+      <h2>6. Security</h2>
+      <p>
+        We take reasonable steps to protect your information and keep the app secure.
+        However, no method of storage or transmission is completely guaranteed to be 100% secure.
+      </p>
+    </div>
 
+    <div class="card">
+      <h2>7. Changes to This Privacy Policy</h2>
+      <p>
+        This Privacy Policy may be updated from time to time to reflect app improvements,
+        legal requirements, or service changes. Updates will be posted on this page.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>8. Contact</h2>
+      <p>
+        If you have any questions about this Privacy Policy, you can contact us at:
+      </p>
+      <p>
+        <a href="mailto:your-email@example.com">your-email@example.com</a>
+      </p>
+    </div>
+
+    <div class="footer">
+      Last updated: April 22, 2026
+    </div>
+  </div>
 </body>
 </html>
