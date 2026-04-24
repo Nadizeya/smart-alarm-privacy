@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Alarm — Wake Up With Your Brain</title>
+  <meta name="description" content="Smart Alarm is an AI-powered alarm app that makes you solve math, logic, language, or themed questions before snoozing or turning off the alarm." />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.14);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --primary: #38bdf8;
+      --secondary: #a78bfa;
+      --accent: #facc15;
+      --success: #34d399;
+      --shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 30%),
+        radial-gradient(circle at 85% 15%, rgba(167, 139, 250, 0.25), transparent 30%),
+        linear-gradient(135deg, #0f172a 0%, #111827 52%, #020617 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.75);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-size: 1.1rem;
+    }
+
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow: 0 12px 35px rgba(56, 189, 248, 0.35);
+      font-size: 1.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font-weight: 700;
+      transition: 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.13);
+    }
+
+    .btn-primary {
+      border: 0;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #020617;
+      box-shadow: 0 16px 40px rgba(56, 189, 248, 0.28);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 48px;
+      min-height: calc(100vh - 76px);
+      padding: 80px 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(250, 204, 21, 0.12);
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      color: #fde68a;
+      font-weight: 700;
+      font-size: 0.88rem;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 6vw, 5.6rem);
+      line-height: 0.96;
+      letter-spacing: -0.07em;
+      margin-bottom: 24px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #e0f2fe, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 650px;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 620px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.55rem;
+      color: var(--text);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .phone-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .glow {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      top: 18%;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.42), rgba(167, 139, 250, 0.38));
+      filter: blur(70px);
+      opacity: 0.7;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.94); opacity: 0.55; }
+      50% { transform: scale(1.08); opacity: 0.8; }
+    }
+
+    .phone {
+      position: relative;
+      width: min(360px, 88vw);
+      min-height: 680px;
+      padding: 18px;
+      border-radius: 46px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.24), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: var(--shadow);
+    }
+
+    .phone-screen {
+      min-height: 644px;
+      border-radius: 34px;
+      padding: 24px;
+      background: linear-gradient(180deg, #111827 0%, #020617 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .phone-top {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.84rem;
+      margin-bottom: 32px;
+    }
+
+    .alarm-time {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .alarm-time .label {
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+    }
+
+    .alarm-time .time {
+      font-size: 4.4rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      margin-top: 8px;
+    }
+
+    .challenge-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 22px;
+      margin: 20px 0;
+    }
+
+    .challenge-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+
+    .question {
+      font-size: 1.7rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin: 12px 0 18px;
+    }
+
+    .answer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .answer {
+      padding: 13px;
+      text-align: center;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      font-weight: 800;
+    }
+
+    .answer.correct {
+      background: rgba(52, 211, 153, 0.16);
+      border-color: rgba(52, 211, 153, 0.38);
+      color: #bbf7d0;
+    }
+
+    .alarm-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .alarm-btn {
+      border: 0;
+      border-radius: 18px;
+      padding: 15px;
+      color: #020617;
+      font-weight: 900;
+      background: var(--accent);
+    }
+
+    .alarm-btn.secondary {
+      background: rgba(255,255,255,0.12);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    section {
+      padding: 88px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 46px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+      margin-bottom: 16px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature-card,
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 26px;
+      padding: 26px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(56, 189, 248, 0.13);
+      margin-bottom: 18px;
+      font-size: 1.45rem;
+    }
+
+    .feature-card h3,
+    .step-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p,
+    .step-card p {
+      color: var(--muted);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #020617;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .themes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .theme-pill {
+      padding: 13px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .cta {
+      position: relative;
+      text-align: center;
+      padding: 64px 30px;
+      border-radius: 36px;
+      background: linear-gradient(135deg, rgba(56,189,248,0.18), rgba(167,139,250,0.18));
+      border: 1px solid rgba(255,255,255,0.16);
+      overflow: hidden;
+    }
+
+    .cta h2 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.06em;
+      margin-bottom: 18px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 680px;
+      margin: 0 auto 28px;
+    }
+
+    footer {
+      padding: 36px 0;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 54px;
+      }
+
+      .phone-wrap {
+        order: -1;
+      }
+
+      .features,
+      .steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        width: min(100% - 26px, 1120px);
+      }
+
+      .phone {
+        min-height: auto;
+      }
+
+      .phone-screen {
+        min-height: auto;
+      }
+
+      .stats,
+      .features,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .alarm-time .time {
+        font-size: 3.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#top" class="logo" aria-label="Smart Alarm home">
+          <span class="logo-mark">⏰</span>
+          <span>Smart Alarm</span>
+        </a>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#themes">Themes</a>
+          <a href="#demo" class="btn">View Demo</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero container">
+      <div>
+        <div class="badge">AI-generated wake-up challenges</div>
+        <h1>Wake up by solving, not just snoozing.</h1>
+        <p>
+          Smart Alarm helps you actually get out of bed. To stop or snooze the alarm,
+          you must solve AI-generated math, logic, language, or themed questions first.
+        </p>
+        <div class="hero-actions">
+          <a href="#demo" class="btn btn-primary">See App Preview</a>
+          <a href="#features" class="btn">Explore Features</a>
+        </div>
+        <div class="stats" aria-label="Smart Alarm highlights">
+          <div class="stat">
+            <strong>AI</strong>
+            <span>Question generation</span>
+          </div>
+          <div class="stat">
+            <strong>4+</strong>
+            <span>Challenge themes</span>
+          </div>
+          <div class="stat">
+            <strong>0</strong>
+            <span>Easy fake wake-ups</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="demo" class="phone-wrap">
+        <div class="glow"></div>
+        <div class="phone" aria-label="Smart Alarm app preview">
+          <div class="phone-screen">
+            <div class="phone-top">
+              <span>7:00</span>
+              <span>● ● ●</span>
+            </div>
+            <div class="alarm-time">
+              <div class="label">Morning Alarm</div>
+              <div class="time">07:00</div>
+            </div>
+            <div class="challenge-card">
+              <h3>Math Challenge</h3>
+              <p>Solve this to turn off the alarm:</p>
+              <div class="question">18 + 24 ÷ 3 = ?</div>
+              <div class="answer-grid">
+                <div class="answer">12</div>
+                <div class="answer correct">26</div>
+                <div class="answer">30</div>
+                <div class="answer">42</div>
+              </div>
+            </div>
+            <div class="alarm-buttons">
+              <button class="alarm-btn secondary">Snooze</button>
+              <button class="alarm-btn">Stop</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-title">
+          <h2>Designed to make your brain wake up first.</h2>
+          <p>Instead of tapping one button half-asleep, Smart Alarm gives you quick challenges that require focus.</p>
+        </div>
+        <div class="features">
+          <article class="feature-card">
+            <div class="icon">🧠</div>
+            <h3>AI Question Engine</h3>
+            <p>Generate fresh questions using prompt-engineering, so the challenge feels different each morning.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon">➗</div>
+            <h3>Math & Logic Tasks</h3>
+            <p>Use arithmetic, reasoning, and logic questions to make sure the user is awake before stopping the alarm.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon">🌏</div>
+            <h3>Theme Selection</h3>
+            <p>Choose question categories like math, logic, Chinese, English, or other custom learning themes.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon">🔔</div>
+            <h3>Alarm Control</h3>
+            <p>Stop or snooze only after solving the challenge, reducing the chance of accidentally sleeping again.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon">📈</div>
+            <h3>Difficulty Options</h3>
+            <p>Adjust question difficulty based on how strong a wake-up challenge you want in the morning.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon">🎯</div>
+            <h3>Simple User Flow</h3>
+            <p>Create an alarm, select a challenge theme, and wake up by answering the generated question.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <div class="section-title">
+          <h2>How it works</h2>
+          <p>A clear flow for your project presentation and app explanation.</p>
+        </div>
+        <div class="steps">
+          <article class="step-card">
+            <div class="step-number">1</div>
+            <h3>Set Alarm</h3>
+            <p>Pick your wake-up time and alarm settings.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">2</div>
+            <h3>Choose Theme</h3>
+            <p>Select math, logic, Chinese, English, or another topic.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">3</div>
+            <h3>Solve Challenge</h3>
+            <p>When the alarm rings, answer the AI-generated question.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">4</div>
+            <h3>Stop or Snooze</h3>
+            <p>The alarm action unlocks only after a correct answer.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="themes">
+      <div class="container">
+        <div class="section-title">
+          <h2>Challenge themes</h2>
+          <p>Make waking up more useful by turning alarms into mini learning moments.</p>
+        </div>
+        <div class="themes" aria-label="Available challenge themes">
+          <span class="theme-pill">Math Problems</span>
+          <span class="theme-pill">Logic Questions</span>
+          <span class="theme-pill">Chinese Practice</span>
+          <span class="theme-pill">English Language</span>
+          <span class="theme-pill">Memory Tasks</span>
+          <span class="theme-pill">Custom AI Prompts</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta">
+          <h2>More than an alarm. A smarter wake-up routine.</h2>
+          <p>
+            Smart Alarm combines alarm scheduling, AI-generated challenges, and themed learning tasks
+            to help users start the day more awake and focused.
+          </p>
+          <a href="#top" class="btn btn-primary">Back to Top</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Smart Alarm. Built for a smarter morning.</p>
+    </div>
+  </footer>
+</body>
+</html>
